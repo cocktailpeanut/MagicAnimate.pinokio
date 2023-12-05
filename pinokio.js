@@ -20,14 +20,9 @@ module.exports = {
       } else {
         return [{
           icon: "fa-solid fa-power-off",
-          text: "Launch Single GPU Mode",
+          text: "Launch",
           href: "start.json",
           params: { fullscreen: true, run: true, mode: "single" }
-        }, {
-          icon: "fa-solid fa-power-off",
-          text: "Launch Multiple GPU Mode",
-          href: "start.json",
-          params: { fullscreen: true, run: true, mode: "multiple" }
         }]
       }
     } else {
