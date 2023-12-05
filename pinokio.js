@@ -1,7 +1,7 @@
 module.exports = {
   title: "MagicAnimate",
   icon: "icon.gif",
-  description: "Temporally Consistent Human Image Animation using Diffusion Model https://showlab.github.io/magicanimate/",
+  description: "[NVIDIA GPU Only] Temporally Consistent Human Image Animation using Diffusion Model https://showlab.github.io/magicanimate/",
   menu: async (kernel) => {
     let installed = await kernel.exists(__dirname, "env")
     if (installed) {
