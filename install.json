@@ -13,6 +13,9 @@
     "method": "shell.run",
     "params": {
       "venv": "env",
+      "env": {
+        "GIT_CLONE_PROTECTION_ACTIVE": "false"
+      },
       "message": [
         "git clone https://github.com/cocktailpeanut/magic-animate app",
         "{{(gpu === 'nvidia' ? self.cmds.nvidia : (gpu === 'amd' ? self.cmds.amd : self.cmds.default))}}",
