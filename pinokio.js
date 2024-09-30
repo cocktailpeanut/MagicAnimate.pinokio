@@ -16,6 +16,10 @@ module.exports = {
           text: "Open UI",
           href: (session && session.url ? session.url : "http://127.0.0.1:7860"),
           target: "_blank"
+        }, {
+          icon: "fa-solid fa-terminal",
+          text: "Terminal",
+          href: "start.json"
         }]
       } else {
         return [{
