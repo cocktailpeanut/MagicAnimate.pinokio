@@ -1,47 +1,67 @@
 {
-  "cmds": {
-    "nvidia": "pip install torch torchvision torchaudio xformers --index-url https://download.pytorch.org/whl/cu118",
-    "amd": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm5.6",
-    "default": "pip install torch torchvision torchaudio"
-  },
-  "requires": [{
-    "type": "conda",
-    "name": "ffmpeg",
-    "args": "-c conda-forge"
-  }],
   "run": [{
     "method": "shell.run",
     "params": {
-      "venv": "env",
       "env": {
         "GIT_CLONE_PROTECTION_ACTIVE": "false"
       },
+      "message": "git clone https://github.com/cocktailpeanut/magic-animate app"
+    }
+  }, {
+    "method": "shell.run",
+    "params": {
+      "venv": "env",
+      "path": "app",
       "message": [
-        "git clone https://github.com/cocktailpeanut/magic-animate app",
-        "{{(gpu === 'nvidia' ? self.cmds.nvidia : (gpu === 'amd' ? self.cmds.amd : self.cmds.default))}}",
         "pip install nvidia-pyindex",
-        "pip install -r requirements.txt",
-        "pip install {{platform === 'darwin' ? 'eva-decord' : 'decord'}}",
-        "cd app",
-        "mkdir pretrained_models",
-        "cd pretrained_models",
-        "git clone https://huggingface.co/zcxu-eric/MagicAnimate",
-        "git clone https://huggingface.co/stabilityai/sd-vae-ft-mse",
-        "git clone https://huggingface.co/cocktailpeanut/stable-diffusion-v1-5",
-        "cd ..",
-        "cd .."
+        "uv pip install -r ../requirements.txt",
+        "uv pip install {{platform === 'darwin' ? 'eva-decord' : 'decord'}}"
       ]
     }
   }, {
-    "method": "input",
-    "params": {
-      "title": "Install Success",
-      "description": "Go back to the dashboard and launch the app!"
+    "method": "script.start",
+    "params":{
+      "uri": "torch.js",
+      "params": {
+        "venv": "env",
+        "path": "app",
+        "xformers": true
+      }
     }
   }, {
-    "method": "browser.open",
+    "method": "hf.download",
     "params": {
-      "uri": "/?selected=MagicAnimate"
+        "path": "app",
+        "_": [ "zcxu-eric/MagicAnimate" ],
+        "exclude": "*.md",
+        "local-dir": "pretrained_models/MagicAnimate"
+    }
+  }, {
+    "method": "hf.download",
+    "params": {
+        "path": "app",
+        "_": [ "stabilityai/sd-vae-ft-mse" ],
+        "exclude": "*.md",
+        "local-dir": "pretrained_models/sd-vae-ft-mse"
+    }
+  }, {
+    "method": "hf.download",
+    "params": {
+        "path": "app",
+        "_": [ "cocktailpeanut/stable-diffusion-v1-5" ],
+        "exclude": "*.md",
+        "local-dir": "pretrained_models/stable-diffusion-v1-5"
+    }
+  }, {
+      "when": "{{platform !== 'linux'}}",
+      "method": "fs.link",
+      "params":{
+        "venv": "app/env"
+      }
+  }, {
+    "method": "notify",
+    "params":{
+      "html": "Click the 'start' tab to get started!"
     }
   }]
 }
