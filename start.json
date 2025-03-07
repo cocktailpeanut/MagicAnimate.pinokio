@@ -3,22 +3,18 @@
   "run": [{
     "method": "shell.run",
     "params": {
-      "venv": "../env",
+      "venv": "env",
       "path": "app",
-      "message": "{{input.mode=='single' ? 'python -m demo.gradio_animate' : 'python -m demo.gradio_animate_dist'}}",
-      "on": [{ "event": "/http:\/\/[0-9.:]+/", "done": true }]
+      "message": "python -m demo.gradio_animate",
+      "on": [{
+        "event": "/http:\/\/[0-9.:]+/",
+        "done": true
+      }]
     }
   }, {
-    "method": "self.set",
+    "method": "local.set",
     "params": {
-      "session.json": {
         "url": "{{input.event[0]}}"
-      }
-    }
-  }, {
-    "method": "browser.open",
-    "params": {
-      "uri": "{{self.session.url}}"
     }
   }]
 }
